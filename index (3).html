@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#2f5bea">
+<title>Matndan qo’lyozmaga</title>
+<link href="https://fonts.googleapis.com/css2?family=Homemade+Apple&family=Caveat&family=Reenie+Beanie&family=Shadows+Into+Light&family=Kalam&family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f4f5f7;--card:#fff;--tx:#1d2330;--mu:#6b7280;--bd:#d9dde3;--ac:#2f5bea}
+@media (prefers-color-scheme:dark){:root{--bg:#14171d;--card:#1d222b;--tx:#e8eaee;--mu:#9aa3b2;--bd:#333a46;--ac:#6c8cff}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px system-ui,sans-serif;-webkit-text-size-adjust:100%}
+header{padding:14px 16px;border-bottom:1px solid var(--bd);background:var(--card)}
+header h1{margin:0;font-size:19px}header p{margin:3px 0 0;color:var(--mu);font-size:13px}
+main{display:grid;grid-template-columns:350px minmax(0,1fr);grid-template-areas:"txt pages" "act pages" "set pages" ". pages";grid-template-rows:auto auto auto 1fr;gap:14px;padding:14px;max-width:1250px;margin:auto}
+#txtc{grid-area:txt}#pages{grid-area:pages}#act{grid-area:act}#set{grid-area:set}
+@media(max-width:800px){main{grid-template-columns:minmax(0,1fr);grid-template-areas:"txt" "pages" "act" "set";grid-template-rows:auto;padding:10px}}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px;align-self:start}
+label{font-size:12px;color:var(--mu);display:block;margin-bottom:3px}
+textarea,select,input[type=number]{width:100%;padding:9px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--tx);font:inherit;font-size:16px}
+textarea{height:150px;resize:vertical}
+@media(max-width:800px){textarea{height:105px}}
+input[type=file]{width:100%;font-size:13px}
+input[type=color]{width:100%;height:40px;border:1px solid var(--bd);border-radius:8px;background:none}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.one{margin-top:10px}
+summary{cursor:pointer;font-weight:600;padding:2px 0}
+button{padding:11px;border:0;border-radius:8px;background:var(--ac);color:#fff;font:inherit;cursor:pointer}
+button.s{background:var(--bg);color:var(--tx);border:1px solid var(--bd)}
+.acts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.acts .w{grid-column:1/-1}
+.hint{font-size:12px;color:var(--mu);margin:8px 0 0}
+#pages{display:flex;flex-direction:column;gap:10px;align-items:center;min-width:0}
+.pg{width:100%;box-shadow:0 2px 10px rgba(0,0,0,.18);border-radius:4px;overflow:hidden}
+.pg canvas{width:100%;display:block}
+.pgbar{display:flex;justify-content:space-between;align-items:center;width:100%;font-size:12px;color:var(--mu)}
+.pgbar button{padding:6px 10px;font-size:12px}
+#ov{position:fixed;inset:0;background:rgba(0,0,0,.88);overflow:auto;z-index:9}
+.ovb{padding:14px;max-width:820px;margin:auto}.ovb p{color:#fff;margin:10px 0}.ovb img{width:100%;display:block;margin:0 0 12px;background:#fff}
+#gate{position:fixed;inset:0;z-index:20;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px}
+.gbox{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:22px;max-width:340px;width:100%;text-align:center}
+.gbox h2{margin:0 0 6px;font-size:18px}.gbox p{margin:0 0 14px;color:var(--mu);font-size:13px}
+.gbox input{width:100%;padding:11px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--tx);font-size:16px;margin-bottom:10px;text-align:center}
+.gbox button{width:100%}#gerr{color:#d33;font-size:13px;min-height:18px;margin:0 0 8px}
+</style>
+</head>
+<body>
+<div id="gate"><div class="gbox"><h2>✍️ Matndan qo’lyozmaga</h2><p>Kirish uchun parolni kiriting</p>
+<input type="password" id="gpw" placeholder="Parol" autocomplete="off"><div id="gerr"></div><button id="gbtn">Kirish</button></div></div>
+<header><h1>✍️ Matndan qo’lyozmaga</h1><p>Bepul, reklamasiz. Telefonda ham, kompyuterda ham ishlaydi.</p></header>
+<main>
+<section class="card" id="txtc"><label>Matn</label><textarea id="txt">Test
+
+1. Statistik jamlashning mohiyati nima?
+Javob: C. Umumlashtiruvchi ko‘rsatkichlar olish uchun statistik ma’lumotlarni il asosda qayta ishlashda.</textarea></section>
+<div id="pages"></div>
+<section class="card" id="act">
+ <div class="acts">
+  <button id="bpdf" class="w">⬇ PDF yuklab olish (hamma sahifa bitta faylda)</button>
+  <button id="bpng" class="s">⬇ PNG (hammasi)</button>
+  <button id="bshare" class="s">📱 Telefonga saqlash</button>
+ </div>
+ <p class="hint">Telefonda yuklash ishlamasa, «Telefonga saqlash» tugmasini bosing: galereyaga yoki Fayllarga saqlash oynasi ochiladi.</p>
+</section>
+<details class="card" id="set" open>
+ <summary>⚙️ Sozlamalar</summary>
+ <div class="one"><label>Shrift</label>
+  <select id="font"><option>Caveat</option><option>Homemade Apple</option><option>Reenie Beanie</option><option>Shadows Into Light</option><option>Kalam</option><option>Nanum Pen Script</option></select></div>
+ <div class="one"><label>O‘z shriftingizni yuklang (.ttf, .otf, .woff, .woff2)</label><input type="file" id="ffile" accept=".ttf,.otf,.woff,.woff2"></div>
+ <div class="row">
+  <div><label>Varoq turi</label><select id="paper"><option value="grid">Katakli</option><option value="lined">Chiziqli</option><option value="plain">Oddiy oq</option><option value="custom">Yuklangan rasm</option></select></div>
+  <div><label>Siyoh rangi</label><input type="color" id="ink" value="#05052a"></div>
+  <div><label>Daftar rejimi</label><select id="mode"><option value="1">Bir tomonli</option><option value="2">Ikki tomonli (ochiq daftar)</option></select></div>
+  <div><label>Qizil chekka chizig‘i</label><select id="marg"><option value="1">Bor</option><option value="0">Yo‘q</option></select></div>
+ </div>
+ <div class="one"><label>O‘z varoqingizni yuklang (rasm)</label><input type="file" id="bfile" accept="image/*"></div>
+ <div class="row">
+  <div><label>Shrift o‘lchami</label><input type="number" id="size" value="30" min="8" max="60"></div>
+  <div><label>Harflar oralig‘i</label><input type="number" id="ls" value="0.5" step="0.1"></div>
+  <div><label>Katak o‘lchami (katakli)</label><input type="number" id="cell" value="22" min="10" max="40"></div>
+  <div><label>Qator oralig‘i (katak soni)</label><input type="number" id="rows" value="2" min="1" max="4"></div>
+  <div><label>Qator balandligi (chiziqli)</label><input type="number" id="lh" value="34" min="16" max="80"></div>
+  <div><label>Tabiiylik (0–5)</label><input type="number" id="jit" value="2" min="0" max="5" step="0.5"></div>
+  <div><label>Chap chekka</label><input type="number" id="ml" value="85"></div>
+  <div><label>Yuqori chekka</label><input type="number" id="mt" value="44" min="0"></div>
+ </div>
+</details>
+</main>
+<script>
+const PAROL='student2026'; // parolni shu yerda o‘zgartiring
+const $=id=>document.getElementById(id),W=794,H=1123;
+let bgImg=null,cvs=[],t;
+const rnd=s=>{const v=Math.sin(s*127.1+311.7)*43758.5453;return v-Math.floor(v)-.5};
+async function render(){
+ const f=$('font').value,size=+$('size').value,ls=+$('ls').value,jit=+$('jit').value,paper=$('paper').value,ink=$('ink').value,step=$('mode').value==='2'?2:1,marg=$('marg').value==='1';
+ const grid=paper==='grid',c=Math.max(8,+$('cell').value||22),rows=Math.max(1,Math.round(+$('rows').value||2));
+ const lh=+$('lh').value,ml=+$('ml').value,mt=+$('mt').value;
+ let pitch,y0,mx,tx;
+ if(grid){pitch=rows*c;y0=Math.ceil(mt/c)*c;mx=Math.round(ml/c)*c;tx=mx+6}
+ else{pitch=lh;y0=mt;mx=ml-14;tx=mx+6}
+ const right=W-14,maxW=right-tx-jit*2;
+ try{await document.fonts.load(size+'px "'+f+'"','Aa')}catch(e){}
+ const fnt=size+'px "'+f+'"',m=document.createElement('canvas').getContext('2d');
+ m.font=fnt;if('letterSpacing' in m)m.letterSpacing=ls+'px';
+ const spW=m.measureText(' ').width,grow=1+jit*.03,lines=[];let gi=0;
+ $('txt').value.split('\n').forEach(p=>{
+  let cur=[],cx=0;
+  p.split(' ').forEach(w=>{
+   if(!w){cx+=spW;return}
+   const ww=m.measureText(w).width*grow;
+   if(cx>0&&cx+ww>maxW){lines.push(cur);cur=[];cx=0}
+   const i=gi++;cur.push({w,x:cx,i});
+   cx+=ww+spW+Math.abs(rnd(i*11+4))*jit*2});
+  lines.push(cur)});
+ const per=Math.max(1,Math.floor((H-y0-c)/pitch)+1),pgs=[];
+ for(let i=0;i<lines.length;i+=per)pgs.push({base:i,ls:lines.slice(i,i+per)});
+ if(!pgs.length)pgs.push({base:0,ls:[]});
+ const box=$('pages');box.innerHTML='';cvs=[];
+ function drawPage(x,ox,pg){
+  x.fillStyle='#fdfdf9';x.fillRect(ox,0,W,H);
+  const custom=paper==='custom'&&bgImg;
+  if(custom){x.drawImage(bgImg,ox,0,W,H)}
+  else if(paper==='lined'){x.strokeStyle='#9db4d8';x.lineWidth=1;for(let y=y0;y<H-10;y+=pitch){x.beginPath();x.moveTo(ox,y);x.lineTo(ox+W,y);x.stroke()}}
+  else if(grid){x.strokeStyle='#b9c7e0';x.lineWidth=.8;for(let y=0;y<=H;y+=c){x.beginPath();x.moveTo(ox,y);x.lineTo(ox+W,y);x.stroke()}for(let xx=0;xx<=W;xx+=c){x.beginPath();x.moveTo(ox+xx,0);x.lineTo(ox+xx,H);x.stroke()}}
+  if(marg&&!custom){x.strokeStyle='#e05a5a';x.lineWidth=1.6;x.beginPath();x.moveTo(ox+mx,0);x.lineTo(ox+mx,H);x.stroke();x.lineWidth=1}
+  x.font=fnt;if('letterSpacing' in x)x.letterSpacing=ls+'px';x.fillStyle=ink;x.textBaseline='alphabetic';
+  pg.ls.forEach((ln,k)=>{
+   const li=pg.base+k,slope=rnd(li*13+1)*jit*.0015,st=(rnd(li*13+2)+.5)*jit*2,by=y0+k*pitch-(grid?2:6);
+   ln.forEach(o=>{
+    const r=o.i*11;
+    x.save();x.globalAlpha=jit?.85+(rnd(r+5)+.5)*.15:1;
+    x.translate(ox+tx+st+o.x,by+slope*o.x+rnd(r+1)*jit*.8);
+    x.rotate(rnd(r+2)*jit*.006);const sc=1+rnd(r+3)*jit*.03;x.scale(sc,sc);
+    x.fillText(o.w,0,0);x.restore()});
+  });
+ }
+ const maxPx=step===2?1100:794;
+ for(let s=0;s<pgs.length;s+=step){
+  const cv=document.createElement('canvas');cv.width=W*step;cv.height=H;const x=cv.getContext('2d');
+  for(let p=0;p<step;p++)drawPage(x,p*W,pgs[s+p]||{base:0,ls:[]});
+  if(step===2){const a=x.createLinearGradient(W-50,0,W,0);a.addColorStop(0,'rgba(0,0,0,0)');a.addColorStop(1,'rgba(0,0,0,.13)');x.fillStyle=a;x.fillRect(W-50,0,50,H);const b=x.createLinearGradient(W,0,W+50,0);b.addColorStop(0,'rgba(0,0,0,.13)');b.addColorStop(1,'rgba(0,0,0,0)');x.fillStyle=b;x.fillRect(W,0,50,H);x.fillStyle='rgba(0,0,0,.18)';x.fillRect(W-.5,0,1,H)}
+  const idx=cvs.length;cvs.push(cv);
+  const bar=document.createElement('div');bar.className='pgbar';bar.style.maxWidth=maxPx+'px';
+  bar.innerHTML='<span>'+(s+1)+(step===2?'–'+(s+2):'')+' / '+pgs.length+'-sahifa</span>';
+  const b=document.createElement('button');b.className='s';b.textContent='PNG yuklab olish';b.onclick=()=>save(idx);bar.appendChild(b);
+  const w=document.createElement('div');w.className='pg';w.style.maxWidth=maxPx+'px';w.appendChild(cv);
+  box.appendChild(bar);box.appendChild(w)}
+}
+
+const toBlob=(cv,type,q)=>new Promise(r=>cv.toBlob(r,type,q));
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+function dl(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),5000)}
+function save(n){toBlob(cvs[n],'image/png').then(b=>dl(b,'qolyozma-'+(n+1)+'.png'))}
+async function pdfBlob(){
+ const enc=new TextEncoder(),chunks=[],off=[];let pos=0;
+ const w=d=>{const u=typeof d==='string'?enc.encode(d):d;chunks.push(u);pos+=u.length};
+ const n=cvs.length,obj=(id,fn)=>{off[id]=pos;w(id+' 0 obj\n');fn();w('\nendobj\n')};
+ w('%PDF-1.4\n');
+ obj(1,()=>w('<</Type/Catalog/Pages 2 0 R>>'));
+ obj(2,()=>w('<</Type/Pages/Count '+n+'/Kids['+cvs.map((_,i)=>(3+3*i)+' 0 R').join(' ')+']>>'));
+ for(let i=0;i<n;i++){
+  const cv=cvs[i],pw=(cv.width*.75).toFixed(2),ph=(cv.height*.75).toFixed(2);
+  const jpg=new Uint8Array(await (await toBlob(cv,'image/jpeg',.92)).arrayBuffer());
+  const cs='q '+pw+' 0 0 '+ph+' 0 0 cm /Im0 Do Q';
+  obj(3+3*i,()=>w('<</Type/Page/Parent 2 0 R/MediaBox[0 0 '+pw+' '+ph+']/Resources<</XObject<</Im0 '+(5+3*i)+' 0 R>>>>/Contents '+(4+3*i)+' 0 R>>'));
+  obj(4+3*i,()=>w('<</Length '+cs.length+'>>\nstream\n'+cs+'\nendstream'));
+  obj(5+3*i,()=>{w('<</Type/XObject/Subtype/Image/Width '+cv.width+'/Height '+cv.height+'/ColorSpace/DeviceRGB/BitsPerComponent 8/Filter/DCTDecode/Length '+jpg.length+'>>\nstream\n');w(jpg);w('\nendstream')});
+ }
+ const total=3*n+3,xr=pos;
+ w('xref\n0 '+total+'\n0000000000 65535 f \n');
+ for(let id=1;id<total;id++)w(String(off[id]).padStart(10,'0')+' 00000 n \n');
+ w('trailer\n<</Size '+total+'/Root 1 0 R>>\nstartxref\n'+xr+'\n%%EOF');
+ return new Blob(chunks,{type:'application/pdf'});
+}
+function showOverlay(){
+ const o=document.createElement('div');o.id='ov';const bx=document.createElement('div');bx.className='ovb';
+ const x=document.createElement('button');x.textContent='Yopish';x.onclick=()=>o.remove();
+ const p=document.createElement('p');p.textContent='Rasmni bosib turing va «Rasmni saqlash» ni tanlang.';
+ bx.append(x,p);cvs.forEach(c=>{const i=new Image();i.src=c.toDataURL('image/png');bx.appendChild(i)});
+ o.appendChild(bx);document.body.appendChild(o)}
+$('bpdf').onclick=async()=>{dl(await pdfBlob(),'qolyozma.pdf')};
+$('bpng').onclick=async()=>{for(let i=0;i<cvs.length;i++){save(i);await wait(600)}};
+$('bshare').onclick=async()=>{
+ const files=[];for(let i=0;i<cvs.length;i++)files.push(new File([await toBlob(cvs[i],'image/png')],'qolyozma-'+(i+1)+'.png',{type:'image/png'}));
+ if(navigator.canShare&&navigator.canShare({files})){try{await navigator.share({files});return}catch(e){if(e.name==='AbortError')return}}
+ showOverlay()};
+$('ffile').onchange=async e=>{const file=e.target.files[0];if(!file)return;
+ const name=file.name.replace(/\.[^.]+$/,'');
+ try{const ff=new FontFace(name,await file.arrayBuffer());await ff.load();document.fonts.add(ff);
+  const o=document.createElement('option');o.textContent=name;$('font').appendChild(o);$('font').value=name;render()}
+ catch(err){alert('Shriftni o‘qib bo‘lmadi. Boshqa fayl sinab ko‘ring.')}};
+$('bfile').onchange=e=>{const file=e.target.files[0];if(!file)return;
+ const img=new Image();img.onload=()=>{bgImg=img;$('paper').value='custom';render()};img.src=URL.createObjectURL(file)};
+document.querySelectorAll('input:not([type=file]),select,textarea').forEach(el=>el.addEventListener('input',()=>{clearTimeout(t);t=setTimeout(render,150)}));
+function unlock(){const g=$('gate');if(g)g.remove()}
+try{if(localStorage.getItem('qy_ok')===PAROL)unlock()}catch(e){}
+function tryPw(){if($('gpw').value.trim()===PAROL){try{localStorage.setItem('qy_ok',PAROL)}catch(e){}unlock()}else{$('gerr').textContent='Parol noto‘g‘ri';$('gpw').select()}}
+$('gbtn').onclick=tryPw;$('gpw').addEventListener('keydown',e=>{if(e.key==='Enter')tryPw()});
+if(innerWidth<800)$('set').open=false;
+document.fonts.ready.then(render);render();
+</script>
+</body>
+</html>
